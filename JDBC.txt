@@ -1,0 +1,194 @@
+//creating connection with database 
+
+
+import java.sql.*;
+public class demo1 {
+	
+	public static void main(String[] args) {
+	
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");                                                          //for Mysql driverCLass ="con.jdbc.mysql.driver"
+			Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/school","root","root"); //connection url="jdbc:mysql://localhost:3306/sonoo","root","root"
+			Statement stmt=con.createStatement();                                                            //here school is database name, root is username and password  
+			stmt.execute("insert into shoolinfo value(103,'lucky',39)");                                    //shoolinfo is the table in databases
+			stmt.close();
+			con.close();	
+		}
+		catch (Exception e){
+			System.out.println(e);
+			
+		}
+		
+	}
+
+}
+
+
+
+//dyanmic isertion of data
+
+import java.sql.*;
+import java.util.Scanner;
+
+public class demo2 {
+	public static void main(String[] args) {
+		
+		try {
+			
+			Class.forName("com.mysql.cj.jdbc.Driver");                                                         
+			Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/school","root","root"); 
+			PreparedStatement smt = con.prepareStatement("insert into shoolinfo values(?,?,?)");   ////dyanmic isertion of data using "prepared statment"
+			Scanner sc = new Scanner(System.in);
+			System.out.println("enter ID :");
+			int id =sc.nextInt();
+			System.out.println("enter Name :");
+			String name =sc.next();
+			System.out.println("enter Age :");
+			int age =sc.nextInt();
+			
+			smt.setInt(1, id);
+			smt.setString(2,name);
+			smt.setInt(3, age);
+			
+			smt.execute();
+			
+			
+		
+			System.out.println("data inserted sucessfully");
+			
+		}
+		catch (Exception e){
+			System.out.println(e);
+			
+		}
+		
+	}
+
+}
+
+
+//updating database
+
+import java.util.Scanner;
+import java.sql.*;
+public class demo3 {
+	public static void main(String[] args) {
+		
+		try {
+			
+			Class.forName("com.mysql.cj.jdbc.Driver");                                                         
+			Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/school","root","root"); 
+			PreparedStatement smt =con.prepareStatement("update shoolinfo set age=? where id=?");  //updating db
+			Scanner sc =new Scanner(System.in);
+			
+			
+			System.out.println("enter iD: ");
+			int id =sc.nextInt();
+			System.out.println("enter new Age: ");
+			int age =sc.nextInt();
+			
+			smt.setInt(2,id);
+			smt.setInt(1,age);
+			
+			smt.execute();
+		
+			System.out.println("data updated sucessfully");
+			
+		}
+		catch (Exception e){
+			System.out.println(e);
+			
+		}
+	}
+
+}
+
+
+//deleting from database
+
+import java.util.Scanner;
+import java.sql.*;
+
+public class demo4 {
+	
+	public static void main(String[] args) {
+		
+		try {
+			
+			Class.forName("com.mysql.cj.jdbc.Driver");                                                         
+			Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/school","root","root"); 
+			PreparedStatement smt =con.prepareStatement("delete from shoolinfo where id=?");  //deleting db
+			Scanner sc =new Scanner(System.in);
+			
+			
+			System.out.println("enter iD to delete: ");
+			int id =sc.nextInt();
+			
+			smt.setInt(1,id);
+			
+			smt.execute();
+			
+			smt.close();
+			con.close();	
+		
+			System.out.println("data deleted sucessfully");
+			
+		}
+		catch (Exception e){
+			System.out.println(e);
+			
+		}
+	}
+
+}
+
+
+//fetching from database
+
+import java.util.Scanner;
+
+import javax.swing.text.Segment;
+
+import java.sql.*;
+
+public class demo4 {
+	
+	public static void main(String[] args) {
+		
+		try {
+			
+			Class.forName("com.mysql.cj.jdbc.Driver");                                                         
+			Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/school","root","root"); 
+			Statement smt=con.createStatement();
+			ResultSet rs=smt.executeQuery("select * from shoolinfo");
+			
+			while(rs.next()) {
+				System.out.println(rs.getInt(1)+"|"+rs.getString(2)+"|"+rs.getInt(3));
+			}
+			
+			//we can give name of column instead of 1 2 3
+			
+			
+			/*while(rs.next()) {
+				
+				if (rs.getInt(1)==103) {
+				System.out.println(rs.getInt(1)+"|"+rs.getString(2)+"|"+rs.getInt(3));
+				}
+				
+			}*/
+			
+			
+			smt.close();
+			con.close();	
+		
+			System.out.println("data deleted sucessfully");
+			
+		}
+		catch (Exception e){
+			System.out.println(e);
+			
+		}
+	}
+
+}
+
